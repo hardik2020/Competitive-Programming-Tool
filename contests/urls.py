@@ -19,5 +19,7 @@ from . import views
 
 
 urlpatterns = [
-    path('',views.contest),
+    path('',views.home),
+    path('problemset/',views.problemset),
+    path('problemset/tags/',views.tags ,name='tags'),
 ]
