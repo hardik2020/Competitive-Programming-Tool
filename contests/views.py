@@ -33,7 +33,7 @@ def contests(request):
             for contest_info in item_text:
                 if count == 0:
                     name = contest_info.text
-                    print(name)
+                    #print(name)
                     count += 1
                     continue
                 if count == 1:
@@ -46,12 +46,12 @@ def contests(request):
                 if count == 2:
                     time_info = contest_info.find("a")
                     time = time_info.text
-                    print(time)
+                    #print(time)
                     count += 1
                     continue
                 if count == 3:
                     length = contest_info.text
-                    print(length)
+                    #print(length)
                     count += 1
                     continue
             link_contests = "https://codeforces.com/contests"
@@ -61,13 +61,7 @@ def contests(request):
                 counter1 += 1
 
 
-    dict_contests_cc=codechef_contests(request)
-
-
-
-
-
-
+    dict_contests_cc = codechef_contests(request)
 
     return render(request, 'contests.html', {'list_url': dict_contests.items(),'list_url_cc':dict_contests_cc.items()})
 
@@ -77,7 +71,7 @@ def codechef_contests(request):
     results = soup.findAll("table", {"class": "dataTable"})
     # future contests only
     count = 0
-    counter2=1
+    counter2 = 1
     for table_data in results:
         if count == 0:
             count += 1
@@ -96,22 +90,28 @@ def codechef_contests(request):
                     if link_url is not None:
                         url1 = link_url.attrs["href"]
                         name = link_url.text
-                        print(name)
+                        print("here",name)
                         break
 
 
-                    time = all_tr.find("td", {"class": "start_date"})
+                time = all_tr.find("td", {"class": "start_date"})
+                if time is not None:
                     start_time = time.text
-                    print(start_time)
-                    time = all_tr.find("td", {"class": "end_date"})
+                else:
+                    start_time = None
+                print(start_time)
+                time = all_tr.find("td", {"class": "end_date"})
+                if time is not None:
                     end_time = time.text
-                    print(end_time)
-                    if name is not None and start_time is not None and end_time is not None :
-                        tuple = [name, url1, start_time, end_time]
-                        print(tuple)
-                        dict_contests_cc[counter2] = tuple
-                        counter2 +=1
-                        count +=1
+                else:
+                    end_time = None
+                print(end_time)
+                if name is not None and start_time is not None and end_time is not None :
+                    tuple = [name, url1, start_time, end_time]
+                    print(tuple)
+                    dict_contests_cc[counter2] = tuple
+                    counter2 +=1
+                    count +=1
                        
     return dict_contests_cc
 
