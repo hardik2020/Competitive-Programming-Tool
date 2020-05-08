@@ -4,4 +4,7 @@ from djongo import models
 class Problems(models.Model):
     name = models.TextField()
     url = models.TextField()
-    rating = models.DecimalField(max_digits=10,decimal_places=5)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.name} {self.url} {self.rating}"

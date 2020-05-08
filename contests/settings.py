@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'contests.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.djongo',
-        'NAME': 'collection_problems',
+        'NAME': 'database_cp',
     }
 }
 
