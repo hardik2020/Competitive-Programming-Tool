@@ -24,7 +24,7 @@ def tags(request):
     range1 = str(request.GET['range1'])
     range2 = str(request.GET['range2'])
 
-    #print("ranges are",range1, range2)
+
     if range1 != "" and range2 != "":
         range1 = int(range1)
         range2 = int(range2)

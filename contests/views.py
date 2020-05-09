@@ -1,6 +1,10 @@
+from django.contrib.auth import logout,authenticate,login
 from django.shortcuts import render
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from bs4 import BeautifulSoup
 import requests
+from Users.models import user
 
 # from PIL import Image
 
@@ -8,11 +12,64 @@ dict_url = {}
 dict_contests = {}
 dict_contests_cc = {}
 counter = 1
+message = ""
 
+
+def registration(request):
+    global message
+    message = ""
+    print(message)
+    context = {
+        "message": message
+    }
+    return render(request,'register.html',context)
+
+def register(request):
+    print("here")
+    global message
+    message = ""
+    name = request.POST["username"]
+    password = request.POST["pass"]
+    confirm = request.POST["confirm"]
+    context = {
+        "message": message
+    }
+    if password != confirm:
+        context["message"] = "Invalid password confirmation"
+        message = "Invalid password confirmation"
+        print(message)
+        return render(request,'register.html',context)
+
+    elif len(user.objects.filter(username=name)) != 0:
+        context["message"] = "Username already exists"
+        message = "Username already exists"
+        print(message)
+        return render(request, 'register.html', context)
+    else:
+        user.objects.create(username=name,password=password)
+        context["message"] = ""
+        message = ""
+        return render(request,'home.html',context)
+
+def login_view(request):
+    global message
+    name = request.POST["username"]
+    password = request.POST["pass"]
+    obj = user.objects.filter(username=name,password=password)
+    if len(obj)==0:
+        message = "Invalid Credentials"
+        return HttpResponseRedirect(reverse('home'))
+    else:
+        message = ""
+        return render(request,'problemset.html')
 
 def home(request):
-    return render(request, 'home.html')
-
+    global message
+    print(message)
+    context = {
+        "message" : message
+    }
+    return render(request, 'home.html',context)
 
 def contests(request):
     req = requests.get('https://codeforces.com' + '/contests')
@@ -56,6 +113,7 @@ def contests(request):
                     continue
             link_contests = "https://codeforces.com/contests"
             if name is not None and time is not None and length!=0:
+                print(time)
                 tuple = [name, time, length, link_contests]
                 dict_contests[counter1] = tuple
                 counter1 += 1
