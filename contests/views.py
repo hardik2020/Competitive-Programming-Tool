@@ -4,9 +4,8 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from bs4 import BeautifulSoup
 import requests
-from Users.models import user
+from django.contrib.auth.models import User
 
-# from PIL import Image
 
 dict_url = {}
 dict_contests = {}
@@ -34,36 +33,56 @@ def register(request):
     context = {
         "message": message
     }
+
     if password != confirm:
         context["message"] = "Invalid password confirmation"
         message = "Invalid password confirmation"
         print(message)
         return render(request,'register.html',context)
 
-    elif len(user.objects.filter(username=name)) != 0:
-        context["message"] = "Username already exists"
-        message = "Username already exists"
-        print(message)
-        return render(request, 'register.html', context)
     else:
-        user.objects.create(username=name,password=password)
+        user = User.objects.create_user(username=name,password=password)
+        if user is None:
+            context["message"] = "Invalid Password"
+            message = "Invalid Password"
+            print(message)
+            return render(request, 'register.html', context)
+        user.is_staff = False
+        user.save()
+        #login(request,user)
         context["message"] = ""
         message = ""
         return render(request,'home.html',context)
 
+
 def login_view(request):
     global message
+    print(request.user)
     name = request.POST["username"]
     password = request.POST["pass"]
-    obj = user.objects.filter(username=name,password=password)
-    if len(obj)==0:
-        message = "Invalid Credentials"
-        return HttpResponseRedirect(reverse('home'))
-    else:
-        message = ""
-        return render(request,'problemset.html')
+    user = authenticate(username=name, password=password)
+    if user is not None and user.is_active:
 
+        login(request, user)
+        message = ""
+
+        return render(request, 'problemset.html')
+
+    else:
+        message = "Invalid credentials"
+        return HttpResponseRedirect(reverse('home'))
+
+def logout_view(request):
+    global message
+    message = ""
+    print(message)
+    context = {
+        "message": message
+    }
+    logout(request)
+    return render(request, 'home.html', context)
 def home(request):
+    #logout(request)
     global message
     print(message)
     context = {

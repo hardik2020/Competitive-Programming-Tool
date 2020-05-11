@@ -12,6 +12,7 @@ counter = 1
 
 # Initial Problemset page
 def problemset(request):
+    print("User is",request.user)
     return render(request, 'problemset.html')
 
 # Problemset page after applying rating tags

@@ -11,6 +11,7 @@ urlpatterns = [
     path('contests/',views.contests),
     path('problemset/tags/',tags ,name='tags'),
     path('login/',views.login_view,name='login_view'),
+    path('logout/',views.logout_view,name='logout_view'),
     path('registration/',views.registration,name='registration'),
     path('register/',views.register,name='register'),
 ]
