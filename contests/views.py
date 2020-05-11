@@ -41,6 +41,13 @@ def register(request):
         return render(request,'register.html',context)
 
     else:
+        obj = User.objects.filter(username=name)
+        if len(obj)!=0:
+            context["message"] = "Username already exists"
+            message = "Username already exists"
+            print(message)
+            return render(request, 'register.html', context)
+
         user = User.objects.create_user(username=name,password=password)
         if user is None:
             context["message"] = "Invalid Password"
