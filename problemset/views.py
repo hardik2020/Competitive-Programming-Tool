@@ -1,5 +1,5 @@
 import operator
-
+from solved_problems.models import Solved_Probelms
 from django.shortcuts import render
 
 from bs4 import BeautifulSoup
@@ -13,7 +13,7 @@ counter = 1
 # Initial Problemset page
 def problemset(request):
     print("User is",request.user)
-    return render(request, 'problemset.html')
+    return render(request, 'problemset.html',{"user":request.user})
 
 # Problemset page after applying rating tags
 def tags(request):
@@ -39,8 +39,17 @@ def tags(request):
 
     # Inserting each problem in dictionary and passing it to html file to render
     for probs in obj:
-        dict_url[counter] = [probs.name,probs.url,probs.rating]
+        print(probs.name.strip())
+        dict_url[counter] = [str(probs.name).strip(),probs.url,probs.rating]
         counter+=1
-    return render(request, 'tags.html', {'list_url': dict_url.items()})
+    #print(dict_url)
+    obj = Solved_Probelms.objects.filter(username=request.user)
+
+    attempted = []
+    for ques in obj:
+        #print(ques.name)
+        attempted.append(ques.name.strip())
+    print(attempted)
+    return render(request, 'tags.html', {'list_url': dict_url.items(),'attempted':attempted,"user":request.user})
 
 

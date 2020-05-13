@@ -1,10 +1,12 @@
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,re_path
 from . import views
 from problemset.views import problemset,tags
+from django.conf.urls import url
 
 urlpatterns = [
+
     path('',views.home,name='home'),
     path('admin/', admin.site.urls),
     path('problemset/',problemset,name='problemset'),
@@ -14,4 +16,6 @@ urlpatterns = [
     path('logout/',views.logout_view,name='logout_view'),
     path('registration/',views.registration,name='registration'),
     path('register/',views.register,name='register'),
+    re_path(r'load/^(?P<name>.{2,14})/$', views.load, name='load'),
+    #path('load/<str:name>',views.load,name='load'),
 ]

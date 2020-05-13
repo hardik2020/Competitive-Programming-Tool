@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from bs4 import BeautifulSoup
 import requests
 from django.contrib.auth.models import User
-
+from solved_problems.models import Solved_Probelms
 
 dict_url = {}
 dict_contests = {}
@@ -13,6 +13,22 @@ dict_contests_cc = {}
 counter = 1
 message = ""
 
+
+def load(request,name):
+    #print("here")
+    #print(name)
+
+    obj = Solved_Probelms.objects.filter(username=request.user,name=name)
+    if len(obj)==0:
+        # insert
+        #print("insert")
+
+        Solved_Probelms.objects.create(username=request.user,name=name)
+    else:
+        # delete
+        #print("delete")
+        obj.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def registration(request):
     global message
@@ -147,7 +163,7 @@ def contests(request):
 
     dict_contests_cc = codechef_contests(request)
 
-    return render(request, 'contests.html', {'list_url': dict_contests.items(),'list_url_cc':dict_contests_cc.items()})
+    return render(request, 'contests.html', {'list_url': dict_contests.items(),'list_url_cc':dict_contests_cc.items(),"user":request.user})
 
 def codechef_contests(request):
     req = requests.get('https://www.codechef.com/contests')
