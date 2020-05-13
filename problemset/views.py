@@ -39,17 +39,18 @@ def tags(request):
 
     # Inserting each problem in dictionary and passing it to html file to render
     for probs in obj:
-        print(probs.name.strip())
+        #print(probs.name.strip())
         dict_url[counter] = [str(probs.name).strip(),probs.url,probs.rating]
         counter+=1
     #print(dict_url)
     obj = Solved_Probelms.objects.filter(username=request.user)
 
+    # list of attempted problems
     attempted = []
     for ques in obj:
         #print(ques.name)
         attempted.append(ques.name.strip())
-    print(attempted)
-    return render(request, 'tags.html', {'list_url': dict_url.items(),'attempted':attempted,"user":request.user})
+    #print(attempted)
+    return render(request, 'tags.html', {'list_url': dict_url.items(),'attempted':attempted,"user":request.user,"range1":range1,"range2":range2})
 
 

@@ -16,6 +16,5 @@ urlpatterns = [
     path('logout/',views.logout_view,name='logout_view'),
     path('registration/',views.registration,name='registration'),
     path('register/',views.register,name='register'),
-    re_path(r'load/^(?P<name>.{2,14})/$', views.load, name='load'),
-    #path('load/<str:name>',views.load,name='load'),
+    path('load/<int:id>/<int:range1>/<int:range2>',views.load,name='load'),
 ]

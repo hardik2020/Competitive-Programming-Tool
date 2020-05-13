@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import requests
 from django.contrib.auth.models import User
 from solved_problems.models import Solved_Probelms
+from problemset.models import Problems
 
 dict_url = {}
 dict_contests = {}
@@ -14,10 +15,11 @@ counter = 1
 message = ""
 
 
-def load(request,name):
-    #print("here")
-    #print(name)
+def load(request,id,range1,range2):
 
+    prob = Problems.objects.filter(rating__lte=range2).exclude(rating__lt=range1)
+    print(len(prob))
+    name = prob[id-1].name
     obj = Solved_Probelms.objects.filter(username=request.user,name=name)
     if len(obj)==0:
         # insert
