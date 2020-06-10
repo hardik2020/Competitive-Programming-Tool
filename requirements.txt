@@ -2,5 +2,5 @@ django
 djongo
 bs4
 requests
-Django==2.2.4
+Django==2.2.13
 sqlparse==0.2.4
