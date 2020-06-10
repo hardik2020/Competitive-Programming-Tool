@@ -1,4 +1,4 @@
-django
+django==2.2.4
 djongo
 bs4
 requests
