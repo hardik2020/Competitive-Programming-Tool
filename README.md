@@ -1,7 +1,7 @@
 # Competitive-Programming-Tool
 
 # Introduction
-This is a tool for beginners in the world of competitive programming.
+This is a tool for beginners in the world of competitive programming. This provides perfect ladders to reach your targets in world of competitive Programming
 
 # Motive(Use case)
 As many times, the beginners are  confused about which platform to start with and thus always keep asking others for help(and we know different persons have different opinions).
